@@ -149,7 +149,7 @@ unsigned int calcTotalTardiness(int* solution, int print)
 void increasePheromones(int *iter_best_solution)
 {
     for(int i = 0; i < n_jobs; i++)
-        jobs[iter_best_solution[i]].pheromone += ((n_jobs / 2) / (i + 1)) / 10.0;
+        jobs[iter_best_solution[i]].pheromone += n_jobs / (2 * i + 2);
 } /* increasePheromones */
 
 // Evaporate the pheromones of each job based on the evaporation rate
@@ -314,21 +314,21 @@ void LocalSearch(int *solution)
         else
             improved_swap = 0;
         
-        // // Job Insertion
-        // best_improvement = 0;
-        // for(int i = 0; i < n_jobs; i++)
-        // {
-        //     current_improvement = evaluateInsertion(solution, i, &index2);
-        //     if(current_improvement > best_improvement)
-        //     {
-        //         best_improvement = current_improvement;
-        //         index1 = i;
-        //     }
-        // }
-        // if(best_improvement != 0)
-        //     insertJob(solution, index1, index2);
-        // else
-        //     improved_insertion = 0;
+        // Job Insertion
+        best_improvement = 0;
+        for(int i = 0; i < n_jobs; i++)
+        {
+            current_improvement = evaluateInsertion(solution, i, &index2);
+            if(current_improvement > best_improvement)
+            {
+                best_improvement = current_improvement;
+                index1 = i;
+            }
+        }
+        if(best_improvement != 0)
+            insertJob(solution, index1, index2);
+        else
+            improved_insertion = 0;
     }
 } /* LocalSearch */
 
