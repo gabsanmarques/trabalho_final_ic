@@ -5,7 +5,6 @@
 #include <string.h>
 
 #define EVAPORATION_RATE 0.05
-#define N_ANTS 100
 #define ITERS_ACO 30
 #define MIN_PHEROMONE 0.05
 #define N_RUNS 5
@@ -31,6 +30,7 @@ static Job *jobs = NULL;
 static int *best_solution = NULL;
 static unsigned int best_aco_tardiness;
 static unsigned int best_tardiness;
+static int n_ants;
 // ================
 
 // Read the values of the input file
@@ -53,6 +53,8 @@ void readInput(const char *input_file)
         jobs[i].scheduled = 0;
         jobs[i].pheromone = 1;
     }
+
+    n_ants = 2 * n_jobs;
 } /* readInput */
 
 // Print the list of jobs
@@ -144,7 +146,6 @@ unsigned int calcTotalTardiness(int* solution, int print)
     return total_tardiness;
 } /* calcTotalTardiness */
 
-// TODO: tentar refinar e melhorar a função objetivo
 // Increase the pheromones of a job based on its position in the best solution
 void increasePheromones(int *iter_best_solution)
 {
@@ -182,7 +183,7 @@ unsigned int ACO(int *iter_best_solution)
     int selected; // Selected job for insertion at next position 
 
     // ACO Single Iteration
-    for(int i = 0; i < N_ANTS; i++)
+    for(int i = 0; i < n_ants; i++)
     {
         resetScheduleds(); // Reset the scheduled flag for all jobs
         current_date = 0;
